@@ -2,51 +2,61 @@
  * @Author: molor
  * @Date: 2022-09-14 11:49:17
  * @LastEditors: molor
- * @LastEditTime: 2022-09-14 16:20:46
- * @FilePath: \compress\index.js
+ * @LastEditTime: 2022-09-14 18:36:20
+ * @FilePath: \compress-img\index.js
  */
 
-const { log } = require('console');
 
+// return
 const compressImg = require("./compressImg");
 const mapDir = require('./mapDir');
 
+
+var arguments = process.argv;
+
 // 目标数组
-const basePath = './panos2';
+const basePath = arguments[2];
 
 // 输出目录
-const outPut = "./pos/";
+const outPut = arguments[3];
+
+console.log(basePath,outPut);
+
+// // 目标数组
+// const basePath = 'C:/Users/HI/Desktop/pano/pano/';
+
+// // 输出目录
+// const outPut = "./pos/";
+
 
 mapDir(basePath, (arr) => {
-  console.log(arr);
   // 过滤非图片
-  let list = arr.filter(item=>item.match(/(jpg)|(jpeg)|(png)/))
+  let list = arr.filter(item => item.match(/(jpg)|(jpeg)|(png)/))
 
   // 生成导出目录
-  list = list.map(item=>item.replaceAll(basePath,outPut));
+  let out = list.map(item => item.replaceAll(basePath, outPut));
+
   console.log(list);
+  console.log(out);
 
-  list =[
-    './panos2/back.jpg',
-    // './panos2/bottom.jpg',
-    // './panos2/new/left.jpg',
-    // './panos2/new/right.jpg',
-  ];
-
-
-  var out =[
-    './pos/back.jpg',
-    // './pos/bottom.jpg',
-    // './pos/new/left.jpg',
-    // './pos/new/right.jpg',
-  ];
-
-
-  list.forEach((item,index) => {
-    compressImg(item,out[index]);
-  });
-  // return;
-  // var fileName = 'E:/素材/全景/已补地成品/back.jpg';
-  // compressImg(fileName);
+  // 压缩图片
+  com(list, out);
 
 });
+
+
+async function com(list, out) {
+  let len = list.length;
+  let count = 0;
+  for (let index = 0; index < len; index++) {
+    try {
+      await compressImg(list[index], out[index]);
+      count++;
+      console.log("compress progress:",count + "/" + len);
+    } catch (e) {
+      //在这里处理错误回调
+      console.log(e);
+    }
+  }
+  console.log('压缩完了');
+}
