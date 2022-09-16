@@ -2,15 +2,14 @@
  * @Author: molor
  * @Date: 2022-09-14 11:49:17
  * @LastEditors: molor
- * @LastEditTime: 2022-09-14 18:36:20
+ * @LastEditTime: 2022-09-15 11:19:43
  * @FilePath: \compress-img\index.js
  */
 
-
-// return
+// yanan.li@3dbizhi.com
+// liyanan2020
 const compressImg = require("./compressImg");
 const mapDir = require('./mapDir');
-
 
 var arguments = process.argv;
 
@@ -31,10 +30,12 @@ console.log(basePath,outPut);
 
 mapDir(basePath, (arr) => {
   // 过滤非图片
-  let list = arr.filter(item => item.match(/(jpg)|(jpeg)|(png)/))
+  let list = arr.filter(item => item.match(/(jpg)|(jpeg)|(png)/));
+
+  console.log(typeof list[0]);
 
   // 生成导出目录
-  let out = list.map(item => item.replaceAll(basePath, outPut));
+  let out = list.map(item => item.replace(basePath, outPut));
 
   console.log(list);
   console.log(out);
